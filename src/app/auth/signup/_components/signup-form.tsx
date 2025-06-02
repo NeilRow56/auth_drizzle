@@ -14,14 +14,37 @@ import { Input } from '@/components/ui/input'
 import { SignupInput, SignupSchema } from '@/validators/signup-validator'
 import { useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
+import { signupUserAction } from '@/actions/signup-user-action'
 
 export const SignupForm = () => {
   const form = useForm<SignupInput>({
     resolver: valibotResolver(SignupSchema),
     defaultValues: { name: '', email: '', password: '', confirmPassword: '' }
   })
-  const { handleSubmit, control, formState } = form
-  const submit = () => {}
+  const { handleSubmit, control, formState, reset, setError } = form
+  const submit = async (values: SignupInput) => {
+    const res = await signupUserAction(values)
+
+    if (res.success) {
+      reset()
+    } else {
+      switch (res.statusCode) {
+        case 400:
+          const nestedErrors = res.error.nested
+
+          for (const key in nestedErrors) {
+            setError(key as keyof SignupInput, {
+              message: nestedErrors[key]?.[0]
+            })
+          }
+          break
+        case 500:
+        default:
+          const error = res.error || 'Internal Server Error'
+          setError('confirmPassword', { message: error })
+      }
+    }
+  }
   return (
     <div>
       <Form {...form}>
