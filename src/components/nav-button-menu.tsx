@@ -23,7 +23,7 @@ export function NavButtonMenu({ icon: Icon, label, choices }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' className='rounded-full'>
-          <Icon className='h-[1.2rem] w-[1.2rem]' />
+          <Icon className='h-[1.2rem] w-[1.2rem]' suppressHydrationWarning />
           <span className='sr-only'>{label}</span>
         </Button>
       </DropdownMenuTrigger>

@@ -21,7 +21,7 @@ export function NavButton({ icon: Icon, label, href }: Props) {
     >
       {href ? (
         <Link href={href}>
-          <Icon />
+          <Icon suppressHydrationWarning />
         </Link>
       ) : (
         <Icon />

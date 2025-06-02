@@ -4,8 +4,8 @@ export default async function RepairShopLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='mx-auto w-full max-w-7xl items-center'>
-      <main className=''>{children}</main>
-    </div>
+    <main className='my-36 flex min-h-screen w-full justify-center'>
+      {children}
+    </main>
   )
 }
