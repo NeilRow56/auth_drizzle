@@ -1,0 +1,98 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+
+import { useForm } from 'react-hook-form'
+import { valibotResolver } from '@hookform/resolvers/valibot'
+
+import { SigninInput, SigninSchema } from '@/validators/signin-validator'
+
+export const SigninForm = () => {
+  const form = useForm<SigninInput>({
+    resolver: valibotResolver(SigninSchema),
+    defaultValues: { email: '', password: '' }
+  })
+  const { handleSubmit, control, formState } = form
+  const submit = async (values: SigninInput) => {
+    console.log(values)
+    // const res = await signinUserAction(values);
+
+    // if (res.success) {
+    //   window.location.href = "/profile";
+    // } else {
+    //   switch (res.statusCode) {
+    //     case 401:
+    //       setError("password", { message: res.error });
+    //       break;
+    //     case 500:
+    //     default:
+    //       const error = res.error || "Internal Server Error";
+    //       setError("password", { message: error });
+    //   }
+    // }
+  }
+  return (
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={handleSubmit(submit)}
+          className='w-[400px] space-y-4'
+          autoComplete='false'
+        >
+          <FormField
+            control={control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder='e.g. john.smith@example.com'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type='password'
+                    placeholder='e.g. ********'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type='submit'
+            disabled={formState.isSubmitting}
+            className='w-full'
+          >
+            Sign up
+          </Button>
+        </form>
+      </Form>
+    </div>
+  )
+}
