@@ -22,15 +22,19 @@ export const SigninForm = () => {
     resolver: valibotResolver(SigninSchema),
     defaultValues: { email: '', password: '' }
   })
-  const { handleSubmit, control, formState, reset, setError } = form
+  const { handleSubmit, control, formState, setError } = form
   const submit = async (values: SigninInput) => {
     const res = await signinUserAction(values)
 
     if (res.success) {
-      reset()
+      window.location.href = '/profile'
     } else {
       switch (res.statusCode) {
+        case 401:
+          setError('password', { message: res.error })
+          break
         case 500:
+
         default:
           const error =
             res.error || 'Internal Server Error. Something went wrong!'
