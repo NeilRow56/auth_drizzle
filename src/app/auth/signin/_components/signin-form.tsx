@@ -15,30 +15,28 @@ import { useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 
 import { SigninInput, SigninSchema } from '@/validators/signin-validator'
+import { signinUserAction } from '@/actions/signin-user-action'
 
 export const SigninForm = () => {
   const form = useForm<SigninInput>({
     resolver: valibotResolver(SigninSchema),
     defaultValues: { email: '', password: '' }
   })
-  const { handleSubmit, control, formState } = form
+  const { handleSubmit, control, formState, reset, setError } = form
   const submit = async (values: SigninInput) => {
-    console.log(values)
-    // const res = await signinUserAction(values);
+    const res = await signinUserAction(values)
 
-    // if (res.success) {
-    //   window.location.href = "/profile";
-    // } else {
-    //   switch (res.statusCode) {
-    //     case 401:
-    //       setError("password", { message: res.error });
-    //       break;
-    //     case 500:
-    //     default:
-    //       const error = res.error || "Internal Server Error";
-    //       setError("password", { message: error });
-    //   }
-    // }
+    if (res.success) {
+      reset()
+    } else {
+      switch (res.statusCode) {
+        case 500:
+        default:
+          const error =
+            res.error || 'Internal Server Error. Something went wrong!'
+          setError('password', { message: error })
+      }
+    }
   }
   return (
     <div>
