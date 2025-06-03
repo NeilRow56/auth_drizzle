@@ -15,18 +15,22 @@ import { SignupInput, SignupSchema } from '@/validators/signup-validator'
 import { useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import { signupUserAction } from '@/actions/signup-user-action'
+import { useState } from 'react'
+import Link from 'next/link'
+import { Card } from '@/components/ui/card'
 
 export const SignupForm = () => {
+  const [success, setSuccess] = useState(false)
   const form = useForm<SignupInput>({
     resolver: valibotResolver(SignupSchema),
     defaultValues: { name: '', email: '', password: '', confirmPassword: '' }
   })
-  const { handleSubmit, control, formState, reset, setError } = form
+  const { handleSubmit, control, formState, setError } = form
   const submit = async (values: SignupInput) => {
     const res = await signupUserAction(values)
 
     if (res.success) {
-      reset()
+      setSuccess(true)
     } else {
       switch (res.statusCode) {
         case 400:
@@ -44,6 +48,26 @@ export const SignupForm = () => {
           setError('confirmPassword', { message: error })
       }
     }
+  }
+
+  if (success) {
+    return (
+      <Card className='min-w-[300px] bg-green-50 px-4'>
+        <p className='tex-center text-primary text-2xl'>
+          User successfully created! 🎉
+        </p>
+
+        <span className='text-primary'>
+          Click{' '}
+          <Button variant='link' size='sm' className='px-0' asChild>
+            <Link href='/auth/signin' className='text-red-500'>
+              here
+            </Link>
+          </Button>{' '}
+          to sign in.
+        </span>
+      </Card>
+    )
   }
   return (
     <div>
@@ -132,7 +156,7 @@ export const SignupForm = () => {
             disabled={formState.isSubmitting}
             className='w-full'
           >
-            Sign up
+            {form.formState.isSubmitting ? 'Submitting' : 'Sign up'}
           </Button>
         </form>
       </Form>

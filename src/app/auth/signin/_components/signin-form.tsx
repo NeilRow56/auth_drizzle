@@ -89,7 +89,7 @@ export const SigninForm = () => {
             disabled={formState.isSubmitting}
             className='w-full'
           >
-            Sign up
+            Sign in
           </Button>
         </form>
       </Form>
