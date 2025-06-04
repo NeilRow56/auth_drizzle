@@ -47,7 +47,7 @@ const SignedIn = ({ user }: { user: User }) => {
 
         <tbody>
           <tr className='divide-x'>
-            <td className='px-6 py-3'>User ID</td>
+            <td className='px-6 py-3'>{user.id}</td>
             <td
               className={cn('px-6 py-3', {
                 'opacity-50': user.name === null
@@ -56,7 +56,7 @@ const SignedIn = ({ user }: { user: User }) => {
               {user.name ?? 'NULL'}
             </td>
             <td className='px-6 py-3'>{user.email}</td>
-            <td className='px-6 py-3 uppercase'>User role</td>
+            <td className='px-6 py-3 uppercase'>{user.role}</td>
           </tr>
         </tbody>
       </table>
