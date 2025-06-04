@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { NavButtonMenu } from './nav-button-menu'
 import { HomeIcon, UsersRound } from 'lucide-react'
 import { NavButton } from './nav-button'
+import { NavbarLinks } from './navbar-links'
 
 // import { NavButtonMenu } from './nav-button.menu'
 
@@ -26,12 +27,7 @@ export function Header() {
         </div>
 
         <div className='flex items-center gap-4'>
-          <Button asChild>
-            <Link href='/auth/signin'>Sign in</Link>
-          </Button>
-          <Button asChild variant='outline'>
-            <Link href='/auth/signup'>Sign up</Link>
-          </Button>
+          <NavbarLinks />
 
           <NavButtonMenu
             icon={UsersRound}
