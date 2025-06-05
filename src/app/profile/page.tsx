@@ -3,9 +3,12 @@ import { SignoutButton } from '@/components/signout-button'
 import { Button } from '@/components/ui/button'
 // import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+
 // import { LockIcon } from 'lucide-react'
 import { User } from 'next-auth'
 import Link from 'next/link'
+
+import { UpdateUserInfoForm } from './_components/update-user-info-form'
 // import Link from 'next/link'
 
 const ProfilePage = async () => {
@@ -27,12 +30,12 @@ const ProfilePage = async () => {
 
 export default ProfilePage
 
-const SignedIn = ({ user }: { user: User }) => {
+const SignedIn = async ({ user }: { user: User }) => {
   return (
     <>
       <div className='flex items-center justify-between px-8'>
         <h2 className='text-2xl font-bold tracking-tight'>User Information</h2>
-        UpDate user
+        <UpdateUserInfoForm user={user} />
       </div>
 
       <table className='mt-4 table-auto divide-y'>

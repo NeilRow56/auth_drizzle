@@ -9,7 +9,7 @@ import { findUserByEmail } from './resources/user-queries'
 import * as argon2 from 'argon2'
 import db from './drizzle'
 
-const nextAuth = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db, {
     usersTable: schema.users,
     accountsTable: schema.accounts,
@@ -21,7 +21,9 @@ const nextAuth = NextAuth({
   pages: { signIn: '/auth/signin' },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log(user)
+      if (trigger === 'update') {
+        return { ...token, ...session.user }
+      }
       if (user?.id) token.id = user.id
       if (user?.role) token.role = user.role
 
@@ -36,13 +38,21 @@ const nextAuth = NextAuth({
   },
   providers: [
     Credentials({
-      async authorize(credentials) {
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
+      credentials: {
+        email: {},
+        password: {}
+      },
+      authorize: async credentials => {
+        let user = null
+
         const parsedCredentials = v.safeParse(SigninSchema, credentials)
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.output
           // Look for our user in the database
-          const user = await findUserByEmail(email)
+          user = await findUserByEmail(email)
           if (!user) return null
 
           if (!user.password) return null
@@ -60,7 +70,6 @@ const nextAuth = NextAuth({
         return null
       }
     })
-  ]
+  ],
+  trustHost: true
 })
-
-export const { signIn, signOut, auth, handlers } = nextAuth
