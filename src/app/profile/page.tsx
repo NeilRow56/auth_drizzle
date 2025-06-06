@@ -9,10 +9,12 @@ import { User } from 'next-auth'
 import Link from 'next/link'
 
 import { UpdateUserInfoForm } from './_components/update-user-info-form'
+import { redirect } from 'next/navigation'
 // import Link from 'next/link'
 
 const ProfilePage = async () => {
   const session = await auth()
+  if (!session) redirect('/auth/signin')
 
   return (
     <div className='mt-4'>
