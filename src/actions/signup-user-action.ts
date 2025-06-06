@@ -5,6 +5,8 @@ import argon2 from 'argon2'
 import db from '@/drizzle'
 import { lower, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
+import { USER_ROLES } from '@/lib/constants'
+import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
 
 type Res =
   | { success: true }
@@ -51,15 +53,16 @@ export async function signupUserAction(values: unknown): Promise<Res> {
   try {
     //Hash password
     const hashedPassword = await argon2.hash(password)
-
-    //TODO: Save user to database
+    const adminEmails = await findAdminUserEmailAddresses()
+    const isAdmin = adminEmails.includes(email.toLowerCase())
 
     const newUser = await db
       .insert(users)
       .values({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER
       })
       .returning({
         id: users.id

@@ -1,6 +1,4 @@
 import Link from 'next/link'
-
-import { Button } from '@/components/ui/button'
 import { NavButtonMenu } from './nav-button-menu'
 import { HomeIcon, UsersRound } from 'lucide-react'
 import { NavButton } from './nav-button'
@@ -37,17 +35,6 @@ export function Header() {
               { title: 'New Customer', href: '/customers/form' }
             ]}
           />
-
-          <Button
-            variant='ghost'
-            size='icon'
-            aria-label='LogOut'
-            title='LogOut'
-            className='rounded-full'
-            asChild
-          >
-            <Link href='/'>Extra</Link>
-          </Button>
         </div>
       </div>
     </header>

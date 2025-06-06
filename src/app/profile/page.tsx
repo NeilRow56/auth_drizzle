@@ -10,10 +10,13 @@ import Link from 'next/link'
 
 import { UpdateUserInfoForm } from './_components/update-user-info-form'
 import { redirect } from 'next/navigation'
+import { LockIcon } from 'lucide-react'
+import { USER_ROLES } from '@/lib/constants'
 // import Link from 'next/link'
 
 const ProfilePage = async () => {
   const session = await auth()
+  const isAdmin = session?.user?.role === USER_ROLES.ADMIN
   if (!session) redirect('/auth/signin')
 
   return (
@@ -21,7 +24,7 @@ const ProfilePage = async () => {
       <div className='mx-auto max-w-7xl border p-2'>
         <div className='flex items-center justify-between'>
           <h1 className='px-8 text-3xl font-bold tracking-tight'>Profile</h1>
-          Admin Button ?????
+          {isAdmin && <AdminPanelButton />}
         </div>
         <div className='bg-muted my-4 h-1' />
         {!!session?.user ? <SignedIn user={session.user} /> : <SignedOut />}
@@ -81,5 +84,16 @@ const SignedOut = () => {
         <Link href='/auth/signin'>Sign In</Link>
       </Button>
     </div>
+  )
+}
+
+const AdminPanelButton = () => {
+  return (
+    <Button size='lg' asChild>
+      <Link href='/profile/admin-panel'>
+        <LockIcon className='mr-2' />
+        Admin Panel
+      </Link>
+    </Button>
   )
 }
