@@ -21,28 +21,32 @@ export default async function Page() {
     <main className='mt-4'>
       <div className='container mx-auto'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-3xl font-bold tracking-tight'>Admin Panel</h1>
+          <h1 className='text-primary text-3xl font-bold tracking-tight'>
+            Admin Panel
+          </h1>
           <ProfileButton />
         </div>
 
         <div className='bg-muted my-4 h-1' />
-        <h2 className='text-2xl font-bold tracking-tight'>All Users</h2>
+        <h2 className='text-primary text-2xl font-bold tracking-tight'>
+          All Users
+        </h2>
 
         <div className='bg-muted my-4 h-1' />
         <table className='mt-4 w-full table-auto divide-y'>
           <thead>
             <tr className='divide-x'>
-              <th className='bg-primary-foreground px-6 py-3 text-start'>id</th>
-              <th className='bg-primary-foreground px-6 py-3 text-start'>
+              <th className='bg-primary px-6 py-3 text-start text-white'>id</th>
+              <th className='bg-primary px-6 py-3 text-start text-white'>
                 name
               </th>
-              <th className='bg-primary-foreground px-6 py-3 text-start'>
+              <th className='bg-primary px-6 py-3 text-start text-white'>
                 email
               </th>
-              <th className='bg-primary-foreground px-6 py-3 text-start'>
+              <th className='bg-primary px-6 py-3 text-start text-white'>
                 email verified
               </th>
-              <th className='bg-primary-foreground px-6 py-3 text-start'>
+              <th className='bg-primary px-6 py-3 text-start text-white'>
                 role
               </th>
             </tr>
@@ -53,7 +57,7 @@ export default async function Page() {
               <tr
                 key={user.id}
                 className={cn('divide-x', {
-                  'bg-primary/15': user.role === USER_ROLES.ADMIN
+                  'bg-primary/10': user.role === USER_ROLES.ADMIN
                 })}
               >
                 <td className='px-6 py-3'>{user.id}</td>
@@ -66,6 +70,7 @@ export default async function Page() {
                 </td>
                 <td className='px-6 py-3'>{user.email}</td>
                 <td className='px-6 py-3'>
+                  {/* {!!user.emailVerified ? 'Yes' : 'No'} */}
                   <ToggleEmailVerifiedInput
                     email={user.email}
                     emailVerified={user.emailVerified}

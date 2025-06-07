@@ -22,6 +22,7 @@ export async function toggleEmailVerifiedAction(
   const existingUser = await findUserByEmail(email)
 
   if (!existingUser) return
+  // In this scenario we are not asking admin users to verify emails
   if (existingUser.role === USER_ROLES.ADMIN) return
 
   const emailVerified = isCurrentlyVerified ? null : new Date()
