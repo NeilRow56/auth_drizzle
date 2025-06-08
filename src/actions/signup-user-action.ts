@@ -7,6 +7,7 @@ import { lower, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { USER_ROLES } from '@/lib/constants'
 import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
+import { createVerificationTokenAction } from './crerate-verification-token-action'
 
 type Res =
   | { success: true }
@@ -28,26 +29,37 @@ export async function signupUserAction(values: unknown): Promise<Res> {
     const existingUser = await db
       .select({
         id: users.id,
-        email: users.email
+        email: users.email,
+        emailVerified: users.emailVerified
       })
       .from(users)
       .where(eq(lower(users.email), email.toLowerCase()))
       .then(res => res[0] ?? null)
 
     if (existingUser?.id) {
-      return {
-        success: false,
-        error: 'Email already exists',
-        statusCode: 409
+      if (!existingUser.emailVerified) {
+        const verificationToken = await createVerificationTokenAction(
+          existingUser.email
+        )
+        console.log(verificationToken)
+        //TODO Send Verification email
+
+        return {
+          success: false,
+          error: 'User exists but not verified. Verification link resent',
+          statusCode: 409
+        }
+      } else {
+        return {
+          success: false,
+          error: 'Email already exists',
+          statusCode: 409
+        }
       }
     }
   } catch (err) {
     console.error(err)
-    return {
-      success: false,
-      error: 'Internal Server Error. Something went wrong!',
-      statusCode: 500
-    }
+    return { success: false, error: 'Internal Server Error', statusCode: 500 }
   }
 
   try {
@@ -65,10 +77,16 @@ export async function signupUserAction(values: unknown): Promise<Res> {
         role: isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER
       })
       .returning({
-        id: users.id
+        id: users.id,
+        email: users.email,
+        emailVerified: users.emailVerified
       })
       .then(res => res[0])
-    console.log({ insertedId: newUser.id })
+
+    const verificationToken = await createVerificationTokenAction(newUser.email)
+
+    //TODO Send Verification email
+    console.log(verificationToken)
 
     return { success: true }
   } catch (error) {

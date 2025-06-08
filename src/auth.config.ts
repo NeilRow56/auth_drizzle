@@ -1,5 +1,6 @@
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import * as schema from '@/drizzle/schema'
+// import Resend from 'next-auth/providers/resend'
 
 import db from './drizzle'
 
@@ -56,6 +57,10 @@ export const authConfig = {
       return session
     }
   },
-
-  providers: []
+  providers: [
+    // Resend({
+    //   apiKey: process.env.AUTH_RESEND_KEY,
+    //   from: process.env.EMAIL_FROM
+    // })
+  ]
 } satisfies NextAuthConfig
