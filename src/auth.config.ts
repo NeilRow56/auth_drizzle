@@ -55,12 +55,14 @@ export const authConfig = {
       session.user.role = token.role
 
       return session
+    },
+    signIn({ user, account }) {
+      if (account?.provider === 'credentials') {
+        if (user.emailVerified) return true
+      }
+
+      return false
     }
   },
-  providers: [
-    // Resend({
-    //   apiKey: process.env.AUTH_RESEND_KEY,
-    //   from: process.env.EMAIL_FROM
-    // })
-  ]
+  providers: []
 } satisfies NextAuthConfig

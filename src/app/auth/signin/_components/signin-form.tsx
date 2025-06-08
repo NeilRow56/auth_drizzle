@@ -16,7 +16,6 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 
 import { SigninInput, SigninSchema } from '@/validators/signin-validator'
 import { signinUserAction } from '@/actions/signin-user-action'
-// import resendLogin from '@/actions/resend-login'
 
 export const SigninForm = () => {
   const form = useForm<SigninInput>({
@@ -45,17 +44,6 @@ export const SigninForm = () => {
   }
   return (
     <div>
-      {/* <form action={resendLogin} className='flex flex-col space-y-4'>
-        <input
-          className='rounded-sm border p-2'
-          type='email'
-          name='email'
-          placeholder='email'
-        />
-        <button className='bg-blue-500 text-white' type='submit'>
-          Sign in with resend
-        </button>
-      </form> */}
       <Form {...form}>
         <form
           onSubmit={handleSubmit(submit)}

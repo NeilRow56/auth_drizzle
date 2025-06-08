@@ -29,6 +29,13 @@ export async function signinUserAction(values: unknown): Promise<Res> {
             error: 'Invalid email or password',
             statusCode: 401
           }
+        case 'AccessDenied':
+          return {
+            success: false,
+            error:
+              'Please verify your email, sign up again to resend verification email',
+            statusCode: 401
+          }
 
         default:
           return {
