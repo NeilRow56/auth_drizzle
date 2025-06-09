@@ -8,6 +8,7 @@ import { eq } from 'drizzle-orm'
 import { USER_ROLES } from '@/lib/constants'
 import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
 import { createVerificationTokenAction } from './crerate-verification-token-action'
+import { sendSignupUserEmail } from './mail/send-signup-user-email'
 
 type Res =
   | { success: true }
@@ -86,7 +87,10 @@ export async function signupUserAction(values: unknown): Promise<Res> {
     const verificationToken = await createVerificationTokenAction(newUser.email)
 
     //TODO Send Verification email
-    console.log(verificationToken)
+    await sendSignupUserEmail({
+      email: newUser.email,
+      token: verificationToken.token
+    })
 
     return { success: true }
   } catch (error) {
