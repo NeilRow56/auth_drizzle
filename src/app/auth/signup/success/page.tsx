@@ -19,6 +19,11 @@ export default function Page() {
           </Button>{' '}
           to go back to the home page.
         </span>
+        <span>
+          <h3>
+            This page can be safely closed once your account has been verified
+          </h3>
+        </span>
       </div>
     </main>
   )

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { SigninForm } from './_components/signin-form'
 import Link from 'next/link'
+import { ForgotPasswordForm } from './_components/forgot-password-form'
 
 const SignUpPage = () => {
   return (
@@ -27,6 +28,7 @@ const SignUpPage = () => {
         </p>
 
         {/* Forgot Password Dialog */}
+        <ForgotPasswordForm />
       </div>
     </div>
   )

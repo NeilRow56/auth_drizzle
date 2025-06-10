@@ -86,7 +86,7 @@ export async function signupUserAction(values: unknown): Promise<Res> {
 
     const verificationToken = await createVerificationTokenAction(newUser.email)
 
-    //TODO Send Verification email
+    //Send Verification email
     await sendSignupUserEmail({
       email: newUser.email,
       token: verificationToken.token
